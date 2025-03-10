@@ -7,3 +7,5 @@ struct spinlock {
   struct cpu *cpu;   // The cpu holding the lock.
 };
 
+void acquire(struct spinlock *lk);
+void release(struct spinlock *lk);

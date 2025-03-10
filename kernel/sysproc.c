@@ -5,7 +5,8 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
-
+#include "sysinfo.h"
+#include "kalloc.h"  // Ensure this is included
 uint64
 sys_exit(void)
 {
@@ -90,4 +91,27 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+uint64
+sys_sysinfo(void) {
+  struct sysinfo info;
+  uint64 addr;
+
+  // Calculate free memory
+  info.freemem = freemem();
+
+  // Calculate number of active processes
+  info.nproc = getnproc();
+
+  // Get the user address for the sysinfo struct
+  argaddr(0, &addr);
+
+
+  // Copy the sysinfo struct to user space
+  if(copyout(myproc()->pagetable, addr, (char *)&info, sizeof(info)) < 0) {
+    return -1;
+  }
+
+  return 0;
 }
