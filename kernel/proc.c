@@ -295,7 +295,9 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
-
+  
+  //sao chép mặt nạ theo dõi từ tiến trình cha sang tiến trình con.
+  np->mask = p->mask;
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
 

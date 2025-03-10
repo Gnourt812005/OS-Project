@@ -115,3 +115,12 @@ sys_sysinfo(void) {
 
   return 0;
 }
+
+uint64
+sys_trace(void){
+  int n;
+  argint(0, &n);
+  myproc()->mask = n;
+  return 0;
+}
+
